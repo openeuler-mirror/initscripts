@@ -1,0 +1,29 @@
+From 482d36652a2f14ae7c2216e019d747a28c521d52 Mon Sep 17 00:00:00 2001
+From: Lijie Yu <yulijie@huawei.com>
+Date: Wed, 7 Mar 2018 16:56:50 +0800
+Subject: [PATCH] initscripts: mod network-function for network when NM
+ unmanaged devices
+
+[Changelog]:mod network-function for network when NM unmanaged devices
+[Author]:yulijie
+---
+ network-scripts/network-functions | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/network-scripts/network-functions b/network-scripts/network-functions
+index 8deda57..00d5bdc 100644
+--- a/network-scripts/network-functions
++++ b/network-scripts/network-functions
+@@ -179,7 +179,9 @@ source_config ()
+         nm_con_load "$CONFIG"
+         if ! is_false $NM_CONTROLLED; then
+             UUID=$(get_uuid_by_config $CONFIG)
+-            [ -n "$UUID" ] && _use_nm=true
++            managed_strings=`nmcli dev show $DEVICE | grep STATE | grep unmanaged`
++            [ -z "$managed_strings" ] && is_device_managed=true
++            [ -n "$UUID" ] && [ "$is_device_managed"x = "true"x ] && _use_nm=true
+         fi
+     fi
+ }
+--
+1.8.3.1

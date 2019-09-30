@@ -1,0 +1,34 @@
+From 6f77c3059cb9aceea5ed9fc6f434577214716476 Mon Sep 17 00:00:00 2001
+From: Hui Wang <john.wanghui@huawei.com>
+Date: Wed, 19 Oct 2016 19:50:29 +0800
+Subject: [PATCH] initscripts: add udev-wait dependency for network
+
+We changed systemd so that ethernet interface can be renamed successfully
+even though the name has be taken, but rename operations will take some
+seconds. Systemd start service concurrent, while systemd-udevd is renaming
+ethernet interfaces, network service start to configure them, once ip was
+set, the rename operation will fail with the error 'Device or resource busy'
+So network service should start after ethernet rename finished, that means
+all uevents are be done.
+
+udev-wait.service will be added to customize packages, such as config-os-XX.
+---
+ rc.d/init.d/network | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/etc/rc.d/init.d/network b/etc/rc.d/init.d/network
+index 2b8c191..91a8043 100755
+--- a/etc/rc.d/init.d/network
++++ b/etc/rc.d/init.d/network
+@@ -8,7 +8,7 @@
+ #
+ ### BEGIN INIT INFO
+ # Provides: $network
+-# Should-Start: iptables ip6tables NetworkManager-wait-online NetworkManager $network-pre
++# Should-Start: iptables ip6tables NetworkManager-wait-online NetworkManager udev-wait $network-pre
+ # Short-Description: Bring up/down networking
+ # Description: Bring up/down networking
+ ### END INIT INFO
+-- 
+1.8.3.1
+

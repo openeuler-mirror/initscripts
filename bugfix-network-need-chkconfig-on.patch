@@ -1,0 +1,25 @@
+From 62acdd3b572ab6d97ddc1457ba6e21187bde0e70 Mon Sep 17 00:00:00 2001
+From: Li Shang <shangli1@huawei.com>
+Date: Tue, 9 Apr 2019 09:03:38 -0400
+Subject: [PATCH] network need start
+
+---
+ etc/rc.d/init.d/network | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/etc/rc.d/init.d/network b/etc/rc.d/init.d/network
+index ade227e..3805f65 100755
+--- a/etc/rc.d/init.d/network
++++ b/etc/rc.d/init.d/network
+@@ -2,7 +2,7 @@
+ #
+ # network       Bring up/down networking
+ #
+-# chkconfig: - 10 90
++# chkconfig: 2345 10 90
+ # description: Activates/Deactivates all network interfaces configured to \
+ #              start at boot time.
+ #
+-- 
+1.8.3.1
+

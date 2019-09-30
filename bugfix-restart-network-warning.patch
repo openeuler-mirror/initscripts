@@ -1,0 +1,37 @@
+From a2cb13d3de5219f9ff0341f5c58fe50830a9de81 Mon Sep 17 00:00:00 2001
+From: zhouxudong <zhouxudong8@huawei.com>
+Date: Sun, 15 Sep 2019 18:39:20 +0800
+Subject: [PATCH] fix
+
+---
+ etc/rc.d/init.d/network | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/etc/rc.d/init.d/network b/etc/rc.d/init.d/network
+index 58fbc4c..4de4a9c 100755
+--- a/etc/rc.d/init.d/network
++++ b/etc/rc.d/init.d/network
+@@ -227,6 +227,7 @@ stop)
+         remaining="$remaining $i"
+     done
+ 
++    bondlist=`cat /proc/net/bonding/* 2> /dev/null | grep "Slave Inter" | awk '{print $3}'`
+     for i in $vpninterfaces $xdslinterfaces $bridgeinterfaces $vlaninterfaces $remaining; do
+         unset DEVICE TYPE
+         (. ./ifcfg-$i
+@@ -236,8 +237,10 @@ stop)
+             action $"Shutting down interface $i: " ./ifdown $i boot
+             [ $? -ne 0 ] && rc=1
+         else
+-            action $"Shutting down non-UP interface $i: " ./ifdown $i boot
+-            logger $"Running ifdown on non-UP interface $i"
++	    if ! echo "$bondlist" | grep -qw $DEVICE ; then
++               action $"Shutting down non-UP interface $i: " ./ifdown $i boot
++               logger $"Running ifdown on non-UP interface $i"
++	    fi
+         fi
+         )
+     done
+-- 
+2.19.1
+

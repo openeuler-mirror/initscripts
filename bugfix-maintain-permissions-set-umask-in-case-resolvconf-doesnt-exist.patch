@@ -1,0 +1,28 @@
+From: wangxiao <wangxiao65@huawei.com>
+Subject: [PATCH] initscripts: maintain permissions set umask in case resolvconf doesn't exist
+reason: maintain permissions set umask in case resolvconf doesn't exist
+diff --git a/network-scripts/network-functions b/network-scripts/network-functions
+index 7f5dfb0..8deda57 100644
+--- a/network-scripts/network-functions
++++ b/network-scripts/network-functions
+@@ -619,6 +619,11 @@
+ # Invoke this when /etc/resolv.conf has changed:
+ change_resolv_conf ()
+ {
++    # maintain permissions
++    # but set umask in case it doesn't exist!
++    oldumask=$(umask)
++    umask 022
++
+     s=$(/bin/grep '^[\ \       ]*option' /etc/resolv.conf 2>/dev/null)
+     if [ $# -gt 1 ]; then
+         if [ "x$s" != "x" ]; then
+@@ -654,6 +659,8 @@
+         /usr/bin/logger -p local7.notice -t "NET" -i "$0 : updated /etc/resolv.conf"
+         [ -e /run/nscd/socket ] && /usr/sbin/nscd -i hosts # invalidate cache
+     fi
++
++    umask $oldumask
+     return $r
+ }
+ 

@@ -1,0 +1,32 @@
+From 2f5a4318ac00a12d2c8c5ecae391917166af6933 Mon Sep 17 00:00:00 2001
+From: Chunmei Xu <xuchunmei@huawei.com>
+Date: Wed, 18 Jul 2018 04:21:01 -0400
+Subject: [PATCH] initscripts: set PERSISTENT_DHCLIENT default to yes for
+ dhclient args
+
+Signed-off-by: Chunmei Xu <xuchunmei@huawei.com>
+---
+ network-scripts/ifup-eth | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/network-scripts/ifup-eth b/network-scripts/ifup-eth
+index 3da5c16..93e8348 100755
+--- a/network-scripts/ifup-eth
++++ b/network-scripts/ifup-eth
+@@ -195,10 +195,10 @@ if [ -n "${BRIDGE}" ] && [ -x /usr/sbin/brctl ]; then
+ fi
+ 
+ if [ -n "${DYNCONFIG}" ] && [ -x /sbin/dhclient ]; then
+-    if is_true "${PERSISTENT_DHCLIENT}"; then
+-        ONESHOT="";
++    if is_false "${PERSISTENT_DHCLIENT}"; then
++       ONESHOT="-1";
+     else
+-        ONESHOT="-1";
++       ONESHOT="";
+     fi;
+     generate_config_file_name
+     generate_lease_file_name
+-- 
+1.8.3.1
+
