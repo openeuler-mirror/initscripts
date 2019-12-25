@@ -1,0 +1,27 @@
+From 4d6de26edd04640c326a5117032f9a088353be58 Mon Sep 17 00:00:00 2001
+From: chenzhen <chenzhen44@huawei.com>
+Date: Thu, 21 Nov 2019 12:13:27 -0500
+Subject: [PATCH] exec udevadm settle when network start
+
+---
+ etc/rc.d/init.d/network | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/etc/rc.d/init.d/network b/etc/rc.d/init.d/network
+index fa371ca..dfe5b83 100755
+--- a/etc/rc.d/init.d/network
++++ b/etc/rc.d/init.d/network
+@@ -61,6 +61,10 @@ export DEPRECATION_WARNING_ISSUED='true'
+ # See how we were called.
+ case "$1" in
+ start)
++    if [ -x /usr/sbin/udevadm ]; then
++        /usr/sbin/udevadm settle
++    fi
++
+     [ "$EUID" != "0" ] && exit 4
+     rc=0
+     # IPv6 hook (pre IPv4 start)
+-- 
+2.19.1
+

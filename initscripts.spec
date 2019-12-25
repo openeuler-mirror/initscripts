@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.01
-Release:          3 
+Release:          4
 
 License:          GPLv2
 
@@ -92,6 +92,8 @@ Patch9002: bugfix-mod-network-function-when-NM-unmanage-devices.patch
 Patch9003: bugfix-initscripts-set-PERSISTENT_DHCLIENT-default-to-yes.patch
 Patch9004: bugfix-network-need-chkconfig-on.patch
 Patch9005: bugfix-restart-network-warning.patch
+Patch9006: new-network-fork-to-start-dhcp.patch
+Patch9007: exec-udevadm-settle-when-network-start.patch
 
 %description
 This package provides basic support for legacy System V init scripts, and some
@@ -358,6 +360,12 @@ fi
 # =============================================================================
 
 %changelog
+* Mon Dec 16 2019 openEuler Buildteam <buildteam@openeuler.org> - 10.01-4
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:execute udevadm settle when network starts and network fork to start dhcp process
+
 * Mon Sep 23 2019 jiangchuangang <jiangchuangang@huawei.com> - 10.01-3
 - Type:bugfix
 - ID:NA

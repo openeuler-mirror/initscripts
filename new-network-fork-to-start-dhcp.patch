@@ -1,0 +1,75 @@
+From ad95c2dae06794a37e500e07e13cee8328ddfb5d Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Tue, 24 Sep 2019 17:39:52 +0800
+Subject: [PATCH] initscripts: add network start dhcp process background
+
+reason:add network start dhcp process background
+
+Signed-off-by: rpm-build <rpm-build>
+---
+ etc/rc.d/init.d/network | 36 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 31 insertions(+), 5 deletions(-)
+
+diff --git a/etc/rc.d/init.d/network b/etc/rc.d/init.d/network
+index 97e6ed1..5f95ee0 100755
+--- a/etc/rc.d/init.d/network
++++ b/etc/rc.d/init.d/network
+@@ -49,6 +49,8 @@ interfaces=$(ls ifcfg-* | \
+         LC_ALL=C sed 's/ //')
+ rc=0
+ 
++godamon=0
++ 
+ net_log $"You are using 'network' service provided by 'network-scripts', which are now deprecated." warning network >&2
+ net_log $"'network-scripts' will be removed from distribution in near future." warning network >&2
+ net_log $"It is advised to switch to 'NetworkManager' instead for network management." warning network >&2
+@@ -131,17 +133,41 @@ start)
+             is_available $i
+             continue
+         fi
+-        action $"Bringing up interface $i: " ./ifup $i boot
+-        [ $? -ne 0 ] && rc=1
++        if [ "$godamon" != "1" ] ; then
++            action $"Bringing up interface $i: " ./ifup $i boot
++            [ $? -ne 0 ] && rc=1
++        else
++            action $"Bringing up interface $i: " ./ifup $i boot &
++        fi
++
++
+     done
+ 
+     # Bring up xDSL and VPN interfaces
+     for i in $vlaninterfaces $bridgeinterfaces $xdslinterfaces $vpninterfaces ; do
+         if ! LANG=C grep -EL "^ONBOOT=['\"]?[Nn][Oo]['\"]?" ifcfg-$i >/dev/null 2>&1 ; then
+-            action $"Bringing up interface $i: " ./ifup $i boot
+-            [ $? -ne 0 ] && rc=1
+-        fi
++            if [ "$godamon" != "1" ] ; then
++		 action $"Bringing up interface $i: " ./ifup $i boot
++		 [ $? -ne 0 ] && rc=1
++	     else
++		action $"Bringing up interface $i: " ./ifup $i boot &
++	    fi
++	 fi
+     done
++    # Waiting until all background process done
++    if [ "$godamon" = "1" ] ; then
++        for pid in $(jobs -p)
++            do
++            wait $pid
++            status=$?
++            if [ $status != 0 ]  ;then
++                net_log "Unable to obtain DHCP addresas."
++                rc=1
++                continue
++            fi
++            rc=0
++        done
++    fi
+ 
+     # Add non interface-specific static-routes.
+     if [ -f /etc/sysconfig/static-routes ]; then
+-- 
+2.19.1
+
