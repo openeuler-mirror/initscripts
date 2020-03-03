@@ -1,0 +1,28 @@
+From df22ec994da59550f065dbd4bc6b554f789f3ed0 Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Tue, 3 Mar 2020 11:49:58 +0800
+Subject: [PATCH] initscripts: adapt to GREP command line
+
+Type:bugfix
+CVE:
+Signed-off-by: zhanglu <zhanglu37@huawei.com>
+---
+ etc/rc.d/init.d/network | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/etc/rc.d/init.d/network b/etc/rc.d/init.d/network
+index f69948e..069442f 100755
+--- a/etc/rc.d/init.d/network
++++ b/etc/rc.d/init.d/network
+@@ -132,7 +132,7 @@ start)
+             continue
+         fi
+ 
+-        if LANG=C grep -EL "^ONBOOT=['\"]?[Nn][Oo]['\"]?" ifcfg-$i > /dev/null ; then
++        if ! LANG=C grep -EL "^ONBOOT=['\"]?[Nn][Oo]['\"]?" ifcfg-$i > /dev/null ; then
+             # this loads the module, to preserve ordering
+             is_available $i
+             continue
+-- 
+1.8.3.1
+
