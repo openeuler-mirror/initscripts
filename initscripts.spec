@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.01
-Release:          4
+Release:          5
 
 License:          GPLv2
 
@@ -94,6 +94,7 @@ Patch9004: bugfix-network-need-chkconfig-on.patch
 Patch9005: bugfix-restart-network-warning.patch
 Patch9006: new-network-fork-to-start-dhcp.patch
 Patch9007: exec-udevadm-settle-when-network-start.patch
+Patch9008: bugfix-network-check-val-of-the-grep.patch
 
 %description
 This package provides basic support for legacy System V init scripts, and some
@@ -360,6 +361,12 @@ fi
 # =============================================================================
 
 %changelog
+* Tue Mar 3 2020 openEuler Buildteam <buildteam@openeuler.org> - 10.01-5
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:adapt to the grep command line
+
 * Mon Dec 16 2019 openEuler Buildteam <buildteam@openeuler.org> - 10.01-4
 - Type:bugfix
 - ID:NA
