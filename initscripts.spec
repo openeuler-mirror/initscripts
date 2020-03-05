@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.01
-Release:          5
+Release:          6
 
 License:          GPLv2
 
@@ -361,6 +361,12 @@ fi
 # =============================================================================
 
 %changelog
+* Thu Mar 5 2020 openEuler Buildteam <buildteam@openeuler.org> - 10.01-6
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:adapt to the grep command line
+
 * Tue Mar 3 2020 openEuler Buildteam <buildteam@openeuler.org> - 10.01-5
 - Type:bugfix
 - ID:NA
