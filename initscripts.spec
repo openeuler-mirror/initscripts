@@ -74,7 +74,7 @@ Obsoletes:        %{name}            < 9.82-2
 
 # Downstream patches for RHEL -- patches that we keep only in RHEL for various
 # ---------------------------    reasons, but are not enabled in Fedora:
-%if %{defined rhel} || %{defined centos} || !%{openEuler}
+%if %{defined rhel} || %{defined centos} || %{defined openEuler}
 #Patch200: example200.patch
 %endif
 
