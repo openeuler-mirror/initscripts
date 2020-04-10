@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.01
-Release:          6
+Release:          7
 
 License:          GPLv2
 
@@ -74,7 +74,7 @@ Obsoletes:        %{name}            < 9.82-2
 
 # Downstream patches for RHEL -- patches that we keep only in RHEL for various
 # ---------------------------    reasons, but are not enabled in Fedora:
-%if %{defined rhel} || %{defined centos}
+%if %{defined rhel} || %{defined centos} || %{defined openEuler}
 #Patch200: example200.patch
 %endif
 
@@ -361,6 +361,9 @@ fi
 # =============================================================================
 
 %changelog
+* Thu Apr 9 2020 songnannan <songnannan2@huawei.com> - 10.01-7
+- add openEuler in the conditional branch
+
 * Thu Mar 5 2020 openEuler Buildteam <buildteam@openeuler.org> - 10.01-6
 - Type:bugfix
 - ID:NA
