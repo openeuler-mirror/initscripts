@@ -19,8 +19,8 @@ Requires:         gawk                       \
 
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
-Version:          10.01
-Release:          7
+Version:          10.04
+Release:          1
 
 License:          GPLv2
 
@@ -81,20 +81,16 @@ Obsoletes:        %{name}            < 9.82-2
 
 # Patches to be removed -- deprecated functionality which shall be removed at
 # ---------------------    some point in the future:
-Patch6000: ifup-ifdown-print-DEPRECATION_WARNING_ISSUED-waring.patch
-Patch6001: ifup-post-fix-incorrect-condition-for-RESOLV_MODS.patch
-Patch6002: run-ifdown-on-all-interfaces.patch
+Patch6000: run-ifdown-on-all-interfaces.patch
 
 
-Patch9000: bugfix-maintain-permissions-set-umask-in-case-resolvconf-doesnt-exist.patch
-Patch9001: bugfix-initscripts-add-udev-wait-dependency-for-network.patch
-Patch9002: bugfix-mod-network-function-when-NM-unmanage-devices.patch
-Patch9003: bugfix-initscripts-set-PERSISTENT_DHCLIENT-default-to-yes.patch
-Patch9004: bugfix-network-need-chkconfig-on.patch
-Patch9005: bugfix-restart-network-warning.patch
-Patch9006: new-network-fork-to-start-dhcp.patch
-Patch9007: exec-udevadm-settle-when-network-start.patch
-Patch9008: bugfix-network-check-val-of-the-grep.patch
+Patch9000: bugfix-initscripts-add-udev-wait-dependency-for-network.patch
+Patch9001: bugfix-mod-network-function-when-NM-unmanage-devices.patch
+Patch9002: bugfix-initscripts-set-PERSISTENT_DHCLIENT-default-to-yes.patch
+Patch9003: bugfix-network-need-chkconfig-on.patch
+Patch9004: bugfix-restart-network-warning.patch
+Patch9005: new-network-fork-to-start-dhcp.patch
+Patch9006: exec-udevadm-settle-when-network-start.patch
 
 %description
 This package provides basic support for legacy System V init scripts, and some
@@ -296,6 +292,7 @@ fi
 
 # RC symlinks:
 %{_sysconfdir}/rc[0-6].d
+%{_sysconfdir}/init.d
 
 # ---------------
 
@@ -361,6 +358,12 @@ fi
 # =============================================================================
 
 %changelog
+* Fri Jul 24 2020 hanzhijun<hanzhijun1@huawei.com> - 10.04-1
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC:update to 10.04 
+
 * Thu Apr 9 2020 songnannan <songnannan2@huawei.com> - 10.01-7
 - add openEuler in the conditional branch
 
