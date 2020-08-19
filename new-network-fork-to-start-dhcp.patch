@@ -11,7 +11,7 @@ Signed-off-by: rpm-build <rpm-build>
  1 file changed, 31 insertions(+), 5 deletions(-)
 
 diff --git a/etc/rc.d/init.d/network b/etc/rc.d/init.d/network
-index 97e6ed1..5f95ee0 100755
+index 31bbe20..994425d 100755
 --- a/etc/rc.d/init.d/network
 +++ b/etc/rc.d/init.d/network
 @@ -49,6 +49,8 @@ interfaces=$(ls ifcfg-* | \
@@ -19,40 +19,38 @@ index 97e6ed1..5f95ee0 100755
  rc=0
  
 +godamon=0
-+ 
++
  net_log $"You are using 'network' service provided by 'network-scripts', which are now deprecated." warning network >&2
  net_log $"'network-scripts' will be removed from distribution in near future." warning network >&2
  net_log $"It is advised to switch to 'NetworkManager' instead for network management." warning network >&2
-@@ -131,17 +133,41 @@ start)
+@@ -129,18 +131,39 @@ start)
              is_available $i
              continue
          fi
 -        action $"Bringing up interface $i: " ./ifup $i boot
 -        [ $? -ne 0 ] && rc=1
-+        if [ "$godamon" != "1" ] ; then
-+            action $"Bringing up interface $i: " ./ifup $i boot
-+            [ $? -ne 0 ] && rc=1
-+        else
-+            action $"Bringing up interface $i: " ./ifup $i boot &
-+        fi
-+
-+
++	if [ "$godamon" != "1" ] ; then
++		action $"Bringing up interface $i: " ./ifup $i boot
++		[ $? -ne 0 ] && rc=1
++	else
++		action $"Bringing up interface $i: " ./ifup $i boot &
++	fi
      done
  
      # Bring up xDSL and VPN interfaces
      for i in $vlaninterfaces $bridgeinterfaces $xdslinterfaces $vpninterfaces ; do
-         if ! LANG=C grep -EL "^ONBOOT=['\"]?[Nn][Oo]['\"]?" ifcfg-$i >/dev/null 2>&1 ; then
+         if ( . ./ifcfg-"$i" ; ! is_false "$ONBOOT" ) ; then
 -            action $"Bringing up interface $i: " ./ifup $i boot
 -            [ $? -ne 0 ] && rc=1
--        fi
-+            if [ "$godamon" != "1" ] ; then
-+		 action $"Bringing up interface $i: " ./ifup $i boot
-+		 [ $? -ne 0 ] && rc=1
-+	     else
-+		action $"Bringing up interface $i: " ./ifup $i boot &
-+	    fi
-+	 fi
++		if [ "$godamon" != "1" ] ; then
++			action $"Bringing up interface $i: " ./ifup $i boot
++			[ $? -ne 0 ] && rc=1
++		else
++			action $"Bringing up interface $i: " ./ifup $i boot &
++		fi
+         fi
      done
+-
 +    # Waiting until all background process done
 +    if [ "$godamon" = "1" ] ; then
 +        for pid in $(jobs -p)
@@ -67,9 +65,8 @@ index 97e6ed1..5f95ee0 100755
 +            rc=0
 +        done
 +    fi
- 
      # Add non interface-specific static-routes.
      if [ -f /etc/sysconfig/static-routes ]; then
+         if [ -x /sbin/route ]; then
 -- 
 2.19.1
-

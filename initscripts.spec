@@ -19,8 +19,8 @@ Requires:         gawk                       \
 
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
-Version:          10.01
-Release:          6
+Version:          10.04
+Release:          1
 
 License:          GPLv2
 
@@ -74,27 +74,21 @@ Obsoletes:        %{name}            < 9.82-2
 
 # Downstream patches for RHEL -- patches that we keep only in RHEL for various
 # ---------------------------    reasons, but are not enabled in Fedora:
-%if %{defined rhel} || %{defined centos}
+%if %{defined rhel} || %{defined centos} || %{defined openEuler}
 #Patch200: example200.patch
 %endif
 
 
 # Patches to be removed -- deprecated functionality which shall be removed at
 # ---------------------    some point in the future:
-Patch6000: ifup-ifdown-print-DEPRECATION_WARNING_ISSUED-waring.patch
-Patch6001: ifup-post-fix-incorrect-condition-for-RESOLV_MODS.patch
-Patch6002: run-ifdown-on-all-interfaces.patch
-
-
-Patch9000: bugfix-maintain-permissions-set-umask-in-case-resolvconf-doesnt-exist.patch
-Patch9001: bugfix-initscripts-add-udev-wait-dependency-for-network.patch
-Patch9002: bugfix-mod-network-function-when-NM-unmanage-devices.patch
-Patch9003: bugfix-initscripts-set-PERSISTENT_DHCLIENT-default-to-yes.patch
-Patch9004: bugfix-network-need-chkconfig-on.patch
-Patch9005: bugfix-restart-network-warning.patch
-Patch9006: new-network-fork-to-start-dhcp.patch
-Patch9007: exec-udevadm-settle-when-network-start.patch
-Patch9008: bugfix-network-check-val-of-the-grep.patch
+Patch0: run-ifdown-on-all-interfaces.patch
+Patch1: bugfix-initscripts-add-udev-wait-dependency-for-network.patch
+Patch2: bugfix-mod-network-function-when-NM-unmanage-devices.patch
+Patch3: bugfix-initscripts-set-PERSISTENT_DHCLIENT-default-to-yes.patch
+Patch4: bugfix-network-need-chkconfig-on.patch
+Patch5: bugfix-restart-network-warning.patch
+Patch6: new-network-fork-to-start-dhcp.patch
+Patch7: exec-udevadm-settle-when-network-start.patch
 
 %description
 This package provides basic support for legacy System V init scripts, and some
@@ -296,6 +290,7 @@ fi
 
 # RC symlinks:
 %{_sysconfdir}/rc[0-6].d
+%{_sysconfdir}/init.d
 
 # ---------------
 
@@ -361,6 +356,12 @@ fi
 # =============================================================================
 
 %changelog
+* Wed Aug 19 2020 gaihuiying<gaihuiying11@huawei.com> - 10.04-1
+- Type:enhancement
+- ID:NA
+- SUG:NA
+- DESC:update to 10.04 
+
 * Thu Mar 5 2020 openEuler Buildteam <buildteam@openeuler.org> - 10.01-6
 - Type:bugfix
 - ID:NA
