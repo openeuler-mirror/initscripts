@@ -1,0 +1,45 @@
+From 882677f72fd4541a9e1aa4b8c40d8095f1be3536 Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Mon, 14 Dec 2020 20:52:47 +0800
+Subject: [PATCH] remove-rename_device_lock-when-process-does-not-exist.patch
+
+---
+ src/rename_device.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/src/rename_device.c b/src/rename_device.c
+index c39f447..5e49bbd 100644
+--- a/src/rename_device.c
++++ b/src/rename_device.c
+@@ -278,6 +278,13 @@ char *get_config_by_hwaddr(char *hwaddr, char *current) {
+ 	return first;
+ }
+ 
++int pid_exist(int pid)
++{
++    char proc_dir[32];
++    sprintf(proc_dir, "/proc/%d/", pid);
++    return !access(proc_dir, F_OK);
++}
++
+ void take_lock() {
+ 	int count = 0;
+ 	int lockfd;
+@@ -309,8 +316,12 @@ void take_lock() {
+ 			close(fd);
+ 			pid = atoi(buf);
+ 			if (pid && pid != 1) {
+-				kill(pid,SIGKILL);
+-			}
++			    if (pid_exist(pid))
++                                kill(pid,SIGKILL);
++                            else
++                                if (unlink(LOCKFILE) != 0)
++                                    break;
++                        }
+ 		}
+ 		usleep(100000);
+ 		continue;
+-- 
+2.23.0
+
