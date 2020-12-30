@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.04
-Release:          1
+Release:          2
 
 License:          GPLv2
 
@@ -89,6 +89,7 @@ Patch4: bugfix-network-need-chkconfig-on.patch
 Patch5: bugfix-restart-network-warning.patch
 Patch6: new-network-fork-to-start-dhcp.patch
 Patch7: exec-udevadm-settle-when-network-start.patch
+Patch8: remove-rename_device_lock-when-process-does-not-exist.patch
 
 %description
 This package provides basic support for legacy System V init scripts, and some
@@ -356,6 +357,12 @@ fi
 # =============================================================================
 
 %changelog
+* Tue Dec 29 2020 zengwefeng<zwfeng@huawei.com> - 10.04-2
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:remove .rename_device.lock when process does not exist
+
 * Wed Aug 19 2020 gaihuiying<gaihuiying11@huawei.com> - 10.04-1
 - Type:enhancement
 - ID:NA
