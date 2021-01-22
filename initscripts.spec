@@ -19,8 +19,8 @@ Requires:         gawk                       \
 
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
-Version:          10.04
-Release:          2
+Version:          10.06
+Release:          1
 
 License:          GPLv2
 
@@ -359,6 +359,12 @@ fi
 # =============================================================================
 
 %changelog
+* Fri Jan 22 2021 xihaochen<xihaochen@huawei.com> - 10.06-1
+- Type:requirements
+- ID:NA
+- SUG:NA
+- DESC: update initscripts to 10.06
+
 * Tue Dec 15 2020 zengwefeng<zwfeng@huawei.com> - 10.04-2
 - Type:bugfix
 - ID:NA
