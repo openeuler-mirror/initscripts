@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.06
-Release:          1
+Release:          2
 
 License:          GPLv2
 
@@ -41,7 +41,6 @@ Requires(post):   coreutils
 
 BuildRequires:    filesystem          >= 3
 BuildRequires:    gcc
-BuildRequires:    git
 BuildRequires:    gettext
 BuildRequires:    glib2-devel
 BuildRequires:    pkgconfig
@@ -189,7 +188,7 @@ support. Additional configuration is required after installation.
 # === BUILD INSTRUCTIONS ======================================================
 
 %prep
-%autosetup -S git
+%autosetup -p1
 
 # ---------------
 
@@ -359,6 +358,9 @@ fi
 # =============================================================================
 
 %changelog
+* Mon Aug 02 2021 chenyanpanHW <chenyanpan@huawei.com> - 10.06-2
+- DESC: delete -S git from %autosetup, and delete BuildRequires git
+
 * Fri Jan 22 2021 xihaochen<xihaochen@huawei.com> - 10.06-1
 - Type:requirements
 - ID:NA
