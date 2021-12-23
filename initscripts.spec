@@ -19,8 +19,8 @@ Requires:         gawk                       \
 
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
-Version:          10.06
-Release:          2
+Version:          10.12
+Release:          1
 
 License:          GPLv2
 
@@ -35,6 +35,8 @@ Requires:         procps-ng
 Requires:         setup
 Requires:         systemd
 Requires:         util-linux
+Requires:         chkconfig
+Requires:         initscripts-service
 
 Requires(pre):    shadow-utils
 Requires(post):   coreutils
@@ -52,7 +54,7 @@ BuildRequires:    systemd
 
 Provides:         /sbin/service
 
-Obsoletes:        %{name}            < 9.82-2
+Obsoletes:        %{name}            < 10.10-1
 
 # === PATCHES =================================================================
 
@@ -80,7 +82,7 @@ Obsoletes:        %{name}            < 9.82-2
 
 # Patches to be removed -- deprecated functionality which shall be removed at
 # ---------------------    some point in the future:
-Patch6000: run-ifdown-on-all-interfaces.patch
+Patch0: backport-run-ifdown-on-all-interfaces.patch
 
 
 Patch9000: bugfix-initscripts-add-udev-wait-dependency-for-network.patch
@@ -97,6 +99,23 @@ This package provides basic support for legacy System V init scripts, and some
 other legacy tools & utilities.
 
 # === SUBPACKAGES =============================================================
+
+%package -n initscripts-service
+Summary:          Support for service command
+BuildArch:        noarch
+
+%shared_requirements
+
+Requires:         systemd
+
+Provides:         /sbin/service
+
+Obsoletes:        %{name}            < 10.10-1
+
+%description -n initscripts-service
+This package provides service command.
+
+# ---------------
 
 %package -n network-scripts
 Summary:          Legacy scripts for manipulating of network devices
@@ -123,6 +142,8 @@ Requires(post):   %{_sbindir}/update-alternatives
 Requires(postun): %{_sbindir}/update-alternatives
 
 Obsoletes:        %{name}            < 9.82-2
+
+Provides:         deprecated()
 
 %description -n network-scripts
 This package contains the legacy scripts for activating & deactivating of most
@@ -184,6 +205,9 @@ Obsoletes:        %{name}            < 9.82-2
 %description -n readonly-root
 This package provides script & configuration file for setting up read-only root
 support. Additional configuration is required after installation.
+
+Please note that readonly-root package is considered deprecated with limited support.
+Please use systemd-volatile-root functionality instead, if possible.
 
 # === BUILD INSTRUCTIONS ======================================================
 
@@ -299,7 +323,6 @@ fi
 %{_bindir}/*
 %{_sbindir}/consoletype
 %{_sbindir}/genhostid
-%{_sbindir}/service
 
 %{_libexecdir}/import-state
 %{_libexecdir}/loadmodules
@@ -311,9 +334,19 @@ fi
 %{_udevrulesdir}/*
 
 %{_mandir}/man1/*
-%{_mandir}/man8/service.*
 
 # =============================================================================
+
+%files -n initscripts-service
+
+%dir %{_libexecdir}/%{name}
+%dir %{_libexecdir}/%{name}/legacy-actions
+
+%{_sbindir}/service
+
+%{_mandir}/man8/service.*
+
+# ---------------
 
 %files -n network-scripts
 %doc doc/examples/
@@ -358,6 +391,12 @@ fi
 # =============================================================================
 
 %changelog
+* Mon Dec 20 2021 xinghe <xinghe2@huawei.com> - 10.12-1
+- Type:requirements
+- ID:NA
+- SUG:NA
+- DESC: update initscripts to 10.12
+
 * Mon Aug 02 2021 chenyanpanHW <chenyanpan@huawei.com> - 10.06-2
 - DESC: delete -S git from %autosetup, and delete BuildRequires git
 
