@@ -12,7 +12,7 @@ index c39f447..5e49bbd 100644
 --- a/src/rename_device.c
 +++ b/src/rename_device.c
 @@ -278,6 +278,13 @@ char *get_config_by_hwaddr(char *hwaddr, char *current) {
- 	return first;
+ 	return name;
  }
  
 +int pid_exist(int pid)
