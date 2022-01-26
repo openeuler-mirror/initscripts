@@ -1,0 +1,65 @@
+From a8212c1b232a902938d0e5ea6a82bd6ae52e861c Mon Sep 17 00:00:00 2001
+From: Zhiqiang Liu <liuzhiqiang26@huawei.com>
+Date: Wed, 6 Mar 2019 04:25:00 +0800
+Subject: [PATCH] ifup-eth: add a new PERSISTENT_DHCLIENT_IPV6 option for IPv6
+ dhclient daemon
+
+In 76226a34 ("ifup-eth: apply PERSISTENT_DHCLIENT to IPv6 dhclient daemon"),
+one PERSISTENT_DHCLIENT option works for both IPv4 and IPv6, so the IPv4
+and IPv6 settings are consistent. However, the user settings for IPv4 and IPv6
+are limited.
+
+For example, users try to adopt both IPv4 and IPv6 protocol. DHCPv6 servers
+may be not stable as DHCP servers, thus the expectation for obtaining IPv6
+address is lower than IPv4 address. For users, IPv4 address must be
+obtained for the basic communication. So the PERSISTENT_DHCLIENT option is
+set to be "yes | 1" for IPv4 address. However, the network service may be
+stuck until it fails due to missing DHCPv6 servers, and the remaining devices also
+cannot obtain both IPv4 and IPv6 addresses. The problem is very serious for users.
+
+Here, I add a new PERSISTENT_DHCLIENT_IPV6 option only for IPv6 dhclient daemon,
+so users can set IPv4 and IPv6 separately.
+
+Fixes: 76226a3 ("ifup-eth: apply PERSISTENT_DHCLIENT to IPv6 dhclient daemon")
+Signed-off-by: Zhiqiang Liu <liuzhiqiang26@huawei.com>
+---
+ doc/sysconfig.txt        | 9 +++++++++
+ network-scripts/ifup-eth | 2 +-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/doc/sysconfig.txt b/doc/sysconfig.txt
+index 0d9abbdf..ebd1f2fb 100644
+--- a/doc/sysconfig.txt
++++ b/doc/sysconfig.txt
+@@ -604,6 +604,15 @@ Files in /etc/sysconfig/network-scripts/
+       By default network-scripts will set `accept_ra` only if $IPV6_AUTOCONF is
+       set to `yes`. If you don't want SLAAC addresses but do want to accept RA,
+       then set this to `yes`. Defaults to `no`.
++    PERSISTENT_DHCLIENT_IPV6=yes|no|1|0
++      Without this option, or if it is 'no'/'0', and DHCPV6C=yes,
++      'dhclient -6' is run for the interface in "one-shot" mode; if the 
++      DHCPv6 server does not respond for a configurable timeout, then
++      'dhclient -6' exits and the interface is not brought up - 
++      the '-1' option is given to 'dhclient -6'.
++      If PERSISTENT_DHCLIENT_IPV6=yes, then dhclient will keep on trying
++      to contact the DHCPv6 server when it does not respond - no '-1'
++      option is given to 'dhclienti -6'. 
+ 
+   Special configuration options for multi-homed hosts etc.
+ 	IPV6_ROUTER=yes|no: Controls IPv6 autoconfiguration
+diff --git a/network-scripts/ifup-eth b/network-scripts/ifup-eth
+index 2f58d195..a4c0d2b4 100755
+--- a/network-scripts/ifup-eth
++++ b/network-scripts/ifup-eth
+@@ -365,7 +365,7 @@ if is_true "${DHCPV6C}" && [ -x /sbin/dhclient ]; then
+     echo -n $"Determining IPv6 information for ${DEVICE}..."
+ 
+     # Initialize the dhclient args for IPv6 and obtain the hostname options if needed:
+-    if is_true "${PERSISTENT_DHCLIENT}"; then
++    if is_true "${PERSISTENT_DHCLIENT_IPV6}"; then
+         ONESHOT="";
+     else
+         ONESHOT="-1";
+-- 
+2.27.0
+
