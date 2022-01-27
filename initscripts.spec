@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.04
-Release:          2
+Release:          3
 
 License:          GPLv2
 
@@ -90,6 +90,7 @@ Patch5: bugfix-restart-network-warning.patch
 Patch6: new-network-fork-to-start-dhcp.patch
 Patch7: exec-udevadm-settle-when-network-start.patch
 Patch8: remove-rename_device_lock-when-process-does-not-exist.patch 
+Patch9: backport-ifup-eth-add-a-new-PERSISTENT_DHCLIENT_IPV6-option-f.patch
 
 %description
 This package provides basic support for legacy System V init scripts, and some
@@ -357,6 +358,12 @@ fi
 # =============================================================================
 
 %changelog
+* Wed Jan 26 2022 gaoxingwang<gaoxingwang@huawei.com> - 10.04-3
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC: ifup-eth: add a new PERSISTENT_DHCLIENT_IPV6 option for IPv6 dhclient daemon
+
 * Tue Dec 29 2020 zengwefeng<zwfeng@huawei.com> - 10.04-2
 - Type:bugfix
 - ID:NA
