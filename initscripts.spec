@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.04
-Release:          3
+Release:          4
 
 License:          GPLv2
 
@@ -286,8 +286,6 @@ fi
 
 # ---------------
 
-%ghost %config(noreplace, missingok) %verify(not md5 size mtime) %{_sysconfdir}/rc.d/rc.local
-
 %{_sysconfdir}/rc.d/init.d/functions
 
 # RC symlinks:
@@ -358,6 +356,12 @@ fi
 # =============================================================================
 
 %changelog
+* Thu Jun 30 2022 xingwei <xingwei14@h-partners.com> - 10.04-4
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:Initscripts no looger care about rc.local
+
 * Wed Jan 26 2022 gaoxingwang<gaoxingwang@huawei.com> - 10.04-3
 - Type:bugfix
 - ID:NA
