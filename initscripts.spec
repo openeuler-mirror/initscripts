@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.12
-Release:          2
+Release:          3
 
 License:          GPLv2
 
@@ -52,9 +52,8 @@ BuildRequires:    setup
 %{?systemd_requires}
 BuildRequires:    systemd
 
-Provides:         /sbin/service
 
-Obsoletes:        %{name}            < 10.10-1
+Obsoletes:        %{name}            < 9.82-2
 
 # === PATCHES =================================================================
 
@@ -110,7 +109,6 @@ Requires:         systemd
 
 Provides:         /sbin/service
 
-Obsoletes:        %{name}            < 10.10-1
 
 %description -n initscripts-service
 This package provides service command.
@@ -389,6 +387,12 @@ fi
 # =============================================================================
 
 %changelog
+* Thu Sep 29 2022 gaoxingwang <gaoxingwang1@huawei.com> - 10.12-3
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:remove redundant provide for service cmd and delete unnecessary obseletes to fix upgrade problem
+
 * Thu Jun 30 2022 xingwei <xingwei14@h-partners.com> - 10.12-2
 - Type:bugfix
 - ID:NA
