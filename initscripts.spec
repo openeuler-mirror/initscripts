@@ -19,8 +19,8 @@ Requires:         gawk                       \
 
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
-Version:          10.12
-Release:          3
+Version:          10.17
+Release:          1
 
 License:          GPLv2
 
@@ -123,6 +123,7 @@ Requires:         %{name}%{?_isa} = %{version}-%{release}
 
 Requires:         bc
 Requires:         dbus
+Requires:         dbus-tools
 Requires:         gawk
 Requires:         grep
 Requires:         hostname
@@ -387,6 +388,12 @@ fi
 # =============================================================================
 
 %changelog
+* Fri Oct 14 2022 gaihuiying <eaglegai@163.com> - 10.17-1
+- Type:requirement
+- ID:NA
+- SUG:NA
+- DESC:update initscripts to 10.17-1
+
 * Thu Sep 29 2022 gaoxingwang <gaoxingwang1@huawei.com> - 10.12-3
 - Type:bugfix
 - ID:NA
