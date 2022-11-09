@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.17
-Release:          1
+Release:          2
 
 License:          GPLv2
 
@@ -92,6 +92,7 @@ Patch9004: bugfix-restart-network-warning.patch
 Patch9005: new-network-fork-to-start-dhcp.patch
 Patch9006: exec-udevadm-settle-when-network-start.patch
 Patch9007: remove-rename_device_lock-when-process-does-not-exis.patch
+Patch9008: bugfix-Incorrect-processing-of-empty-files-for-resolv.conf.patch
 
 %description
 This package provides basic support for legacy System V init scripts, and some
@@ -388,6 +389,12 @@ fi
 # =============================================================================
 
 %changelog
+* Mon Nov 07 2022 zhangqiang <zhangqiang@kylinos.cn> - 10.17-2
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:Incorrect processing of empty files for resolv.conf
+
 * Fri Oct 14 2022 gaihuiying <eaglegai@163.com> - 10.17-1
 - Type:requirement
 - ID:NA
