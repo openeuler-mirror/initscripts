@@ -20,7 +20,7 @@ Requires:         gawk                       \
 Name:             initscripts
 Summary:          Basic support for legacy System V init scripts
 Version:          10.17
-Release:          2
+Release:          3
 
 License:          GPLv2
 
@@ -124,7 +124,6 @@ Requires:         %{name}%{?_isa} = %{version}-%{release}
 
 Requires:         bc
 Requires:         dbus
-Requires:         dbus-tools
 Requires:         gawk
 Requires:         grep
 Requires:         hostname
@@ -389,6 +388,12 @@ fi
 # =============================================================================
 
 %changelog
+* Mon Feb 20 2023 gaihuiying <eaglegai@163.com> - 10.17-3
+- Type:bugfix
+- ID:NA
+- SUG:NA
+- DESC:delete Requires:dbus-tools
+
 * Mon Nov 07 2022 zhangqiang <zhangqiang@kylinos.cn> - 10.17-2
 - Type:bugfix
 - ID:NA
