@@ -1,0 +1,15 @@
+From: jammyjellyfish <jammyjellyfish255@outlook.com>
+Date: Mon Apr 17 01:49:49 PM CST 2023
+Subject: Support specify CC
+diff -up initscripts-10.17/src/Makefile.orig2 initscripts-10.17/src/Makefile
+--- initscripts-10.17/src/Makefile.orig2	2023-04-14 22:39:35.308829467 +0800
++++ initscripts-10.17/src/Makefile	2023-04-14 22:39:49.296867265 +0800
+@@ -17,7 +17,7 @@ bindir      = $(prefix)/bin
+ sbindir     = $(prefix)/sbin
+ libdir      = $(prefix)/lib
+ 
+-CC          = gcc
++CC         ?= gcc
+ CFLAGS     += $(RPM_OPT_FLAGS) -Wall -D_GNU_SOURCE -fPIE
+ LDFLAGS    += $(RPM_LD_FLAGS) -pie -z relro -z now
+ 
